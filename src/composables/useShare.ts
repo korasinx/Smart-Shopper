@@ -1,4 +1,5 @@
 import type { ShoppingList, ShoppingItem } from '@/db'
+import { CATEGORY_MAP } from '@/constants/categories'
 
 /**
  * Composable for sharing and exporting lists
@@ -26,7 +27,8 @@ export function useShare() {
     // Format items by category
     categories.forEach((category) => {
       const categoryItems = itemsByCategory[category]!
-      const categoryName = category.charAt(0).toUpperCase() + category.slice(1)
+      const categoryName =
+        CATEGORY_MAP[category]?.name ?? category.charAt(0).toUpperCase() + category.slice(1)
       text += `${categoryName}:\n`
 
       categoryItems.forEach((item) => {
@@ -40,8 +42,8 @@ export function useShare() {
     // Add summary
     const completedCount = items.filter((i) => i.completed).length
     text += `\n---\n`
-    text += `Total: ${items.length} items\n`
-    text += `Completed: ${completedCount}/${items.length}\n`
+    text += `Total: ${items.length} ${items.length === 1 ? 'item' : 'itens'}\n`
+    text += `Concluídos: ${completedCount}/${items.length}\n`
 
     return text
   }
@@ -118,7 +120,7 @@ export function useShare() {
       const data = JSON.parse(jsonContent)
 
       if (!data.version || !data.list || !data.items) {
-        throw new Error('Invalid JSON format')
+        throw new Error('Formato de JSON inválido')
       }
 
       return {
@@ -127,7 +129,7 @@ export function useShare() {
       }
     } catch (error) {
       console.error('Failed to parse JSON:', error)
-      throw new Error('Invalid JSON file')
+      throw new Error('Arquivo JSON inválido')
     }
   }
 

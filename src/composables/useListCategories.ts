@@ -44,10 +44,10 @@ export function useListCategories(listId: string) {
       const categoryName = categoriesStore.getCategoryDisplay(newCategory)
       if (count > 1) {
         toastStore.showSuccess(
-          `Will remember "${item.name}" → ${categoryName} (${count} items updated)`,
+          `Vou lembrar de "${item.name}" → ${categoryName} (${count} itens atualizados)`,
         )
       } else {
-        toastStore.showSuccess(`Will remember "${item.name}" → ${categoryName}`)
+        toastStore.showSuccess(`Vou lembrar de "${item.name}" → ${categoryName}`)
       }
     } catch (error) {
       console.error('Failed to change category:', error)
@@ -67,7 +67,7 @@ export function useListCategories(listId: string) {
   const handleCreateCategory = async (name: string, icon: string) => {
     try {
       await categoriesStore.createCategory(name, icon)
-      toastStore.showSuccess(`Created category "${name}" ${icon}`)
+      toastStore.showSuccess(`Categoria "${name}" criada ${icon}`)
     } catch (error) {
       console.error('Failed to create category:', error)
     }

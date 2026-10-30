@@ -96,19 +96,19 @@ const categoriesStore = useCategoriesStore()
             }
           "
           class="px-3 py-1.5 text-sm bg-background border border-border rounded-lg cursor-pointer transition-all duration-200 hover:border-border-hover focus:outline-none focus:ring-2 focus:ring-primary/50 opacity-0 group-hover:opacity-100 max-md:opacity-100"
-          title="Change category"
+          title="Mudar categoria"
         >
           <option v-for="cat in categoriesStore.allCategories" :key="cat.id" :value="cat.id">
             {{ cat.icon }} {{ cat.name }}
           </option>
-          <option value="__new__" class="font-semibold">➕ New Category...</option>
+          <option value="__new__" class="font-semibold">➕ Nova categoria...</option>
         </select>
 
         <!-- Delete Button -->
         <IconButton
           variant="danger"
           icon="🗑️"
-          title="Remove item"
+          title="Remover item"
           @click="emit('deleteItem', item.id)"
           class="opacity-0 group-hover:opacity-100 max-md:opacity-100"
         />

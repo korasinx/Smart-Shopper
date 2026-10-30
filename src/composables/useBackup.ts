@@ -107,7 +107,7 @@ export function useBackup() {
     const errors: string[] = []
 
     if (!data || typeof data !== 'object') {
-      errors.push('Backup data must be an object')
+      errors.push('Os dados do backup devem ser um objeto')
       return { valid: false, errors }
     }
 
@@ -115,32 +115,32 @@ export function useBackup() {
 
     // Check required fields
     if (!backup.version) {
-      errors.push('Missing version field')
+      errors.push('Campo de versão ausente')
     }
 
     if (typeof backup.timestamp !== 'number') {
-      errors.push('Missing or invalid timestamp field')
+      errors.push('Campo de data ausente ou inválido')
     }
 
     if (!Array.isArray(backup.lists)) {
-      errors.push('Missing or invalid lists array')
+      errors.push('Lista de listas ausente ou inválida')
     }
 
     if (!Array.isArray(backup.items)) {
-      errors.push('Missing or invalid items array')
+      errors.push('Lista de itens ausente ou inválida')
     }
 
     if (!Array.isArray(backup.customCategories)) {
-      errors.push('Missing or invalid customCategories array')
+      errors.push('Lista de categorias personalizadas ausente ou inválida')
     }
 
     if (!Array.isArray(backup.products)) {
-      errors.push('Missing or invalid products array')
+      errors.push('Lista de produtos ausente ou inválida')
     }
 
     // Validate version compatibility
     if (backup.version && !backup.version.startsWith('1.')) {
-      errors.push(`Incompatible backup version: ${backup.version}`)
+      errors.push(`Versão de backup incompatível: ${backup.version}`)
     }
 
     return {
@@ -161,7 +161,7 @@ export function useBackup() {
     // Validate backup first
     const validation = validateBackup(backupData)
     if (!validation.valid) {
-      throw new Error(`Invalid backup: ${validation.errors.join(', ')}`)
+      throw new Error(`Backup inválido: ${validation.errors.join(', ')}`)
     }
 
     // If not merging, clear existing data
@@ -262,15 +262,15 @@ export function useBackup() {
           resolve()
         } catch (error) {
           if (error instanceof Error) {
-            reject(new Error(`Failed to import backup: ${error.message}`))
+            reject(new Error(`Não foi possível importar o backup: ${error.message}`))
           } else {
-            reject(new Error('Failed to import backup: Unknown error'))
+            reject(new Error('Não foi possível importar o backup: erro desconhecido'))
           }
         }
       }
 
       reader.onerror = () => {
-        reject(new Error('Failed to read backup file'))
+        reject(new Error('Não foi possível ler o arquivo de backup'))
       }
 
       reader.readAsText(file)

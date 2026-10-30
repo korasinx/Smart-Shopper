@@ -32,7 +32,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
         preferences.value.set(pref.itemName, pref.category)
       })
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to load preferences'
+      error.value = e instanceof Error ? e.message : 'Não foi possível carregar as preferências'
       console.error('Failed to load category preferences:', e)
     } finally {
       loading.value = false
@@ -68,7 +68,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
       await db.categoryPreferences.put(preference)
       preferences.value.set(normalized, category)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to save preference'
+      error.value = e instanceof Error ? e.message : 'Não foi possível salvar a preferência'
       console.error('Failed to save category preference:', e)
       throw e
     } finally {
@@ -88,7 +88,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
       await db.categoryPreferences.delete(normalized)
       preferences.value.delete(normalized)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to remove preference'
+      error.value = e instanceof Error ? e.message : 'Não foi possível remover a preferência'
       console.error('Failed to remove category preference:', e)
       throw e
     } finally {
@@ -106,7 +106,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
       await db.categoryPreferences.clear()
       preferences.value.clear()
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to clear preferences'
+      error.value = e instanceof Error ? e.message : 'Não foi possível limpar as preferências'
       console.error('Failed to clear category preferences:', e)
       throw e
     } finally {

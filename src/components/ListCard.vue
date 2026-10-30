@@ -33,7 +33,7 @@ const progressPercentage = computed(() => {
 const listColor = computed(() => props.list.color || DEFAULT_LIST_COLOR)
 
 const formatDate = (timestamp: number) => {
-  return new Date(timestamp).toLocaleDateString()
+  return new Date(timestamp).toLocaleDateString('pt-BR')
 }
 </script>
 
@@ -62,22 +62,22 @@ const formatDate = (timestamp: number) => {
         <IconButton
           v-if="variant === 'active'"
           icon="📋"
-          title="Duplicate"
+          title="Duplicar"
           @click.stop="emit('duplicate')"
         />
         <IconButton
           v-if="variant === 'active'"
           icon="📦"
-          title="Archive"
+          title="Arquivar"
           @click.stop="emit('archive')"
         />
         <IconButton
           v-if="variant === 'archived'"
           icon="↩️"
-          title="Unarchive"
+          title="Desarquivar"
           @click.stop="emit('unarchive')"
         />
-        <IconButton icon="🗑️" title="Delete" variant="danger" @click.stop="emit('delete')" />
+        <IconButton icon="🗑️" title="Excluir" variant="danger" @click.stop="emit('delete')" />
       </div>
     </div>
 
@@ -89,7 +89,7 @@ const formatDate = (timestamp: number) => {
           <span class="text-xl font-bold text-text leading-none">
             {{ completedItems }}
           </span>
-          <span class="text-xs text-text-secondary uppercase tracking-wide"> completed </span>
+          <span class="text-xs text-text-secondary uppercase tracking-wide"> concluídos </span>
         </div>
       </div>
       <div class="w-px h-8 bg-border"></div>
@@ -99,7 +99,7 @@ const formatDate = (timestamp: number) => {
           <span class="text-xl font-bold text-text leading-none">
             {{ totalItems }}
           </span>
-          <span class="text-xs text-text-secondary uppercase tracking-wide"> total items </span>
+          <span class="text-xs text-text-secondary uppercase tracking-wide"> itens no total </span>
         </div>
       </div>
     </div>
@@ -108,7 +108,8 @@ const formatDate = (timestamp: number) => {
     <div class="flex items-center text-sm">
       <span class="text-text-secondary">
         <span class="mr-1">🕒</span>
-        {{ variant === 'active' ? 'Updated' : 'Archived' }} {{ formatDate(list.updatedAt) }}
+        {{ variant === 'active' ? 'Atualizada em' : 'Arquivada em' }}
+        {{ formatDate(list.updatedAt) }}
       </span>
     </div>
 

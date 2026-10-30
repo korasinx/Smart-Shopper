@@ -33,7 +33,7 @@ export const useItemsStore = defineStore('items', () => {
       const listItems = await itemsDB.getByListId(listId)
       items.value.set(listId, listItems)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to load items'
+      error.value = e instanceof Error ? e.message : 'Não foi possível carregar os itens'
       console.error('Failed to load items:', e)
     } finally {
       loading.value = false
@@ -55,7 +55,7 @@ export const useItemsStore = defineStore('items', () => {
       items.value.set(listId, [...listItems, item])
       return item
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to create item'
+      error.value = e instanceof Error ? e.message : 'Não foi possível criar o item'
       console.error('Failed to create item:', e)
       throw e
     } finally {
@@ -74,7 +74,7 @@ export const useItemsStore = defineStore('items', () => {
         Object.assign(item, updates)
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to update item'
+      error.value = e instanceof Error ? e.message : 'Não foi possível atualizar o item'
       console.error('Failed to update item:', e)
       throw e
     } finally {
@@ -94,7 +94,7 @@ export const useItemsStore = defineStore('items', () => {
         item.completedAt = item.completed ? Date.now() : undefined
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to toggle item'
+      error.value = e instanceof Error ? e.message : 'Não foi possível marcar o item'
       console.error('Failed to toggle item:', e)
       throw e
     } finally {
@@ -113,7 +113,7 @@ export const useItemsStore = defineStore('items', () => {
         listItems.filter((item) => item.id !== id),
       )
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to delete item'
+      error.value = e instanceof Error ? e.message : 'Não foi possível excluir o item'
       console.error('Failed to delete item:', e)
       throw e
     } finally {
@@ -132,7 +132,7 @@ export const useItemsStore = defineStore('items', () => {
         listItems.filter((item) => !item.completed),
       )
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to remove completed items'
+      error.value = e instanceof Error ? e.message : 'Não foi possível remover os itens concluídos'
       console.error('Failed to remove completed items:', e)
       throw e
     } finally {
@@ -158,7 +158,7 @@ export const useItemsStore = defineStore('items', () => {
 
       return count
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to update items by name'
+      error.value = e instanceof Error ? e.message : 'Não foi possível atualizar os itens'
       console.error('Failed to update items by name:', e)
       throw e
     } finally {

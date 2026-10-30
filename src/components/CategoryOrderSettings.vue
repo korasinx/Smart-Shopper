@@ -76,10 +76,10 @@ const resetOrder = async () => {
 <template>
   <div class="w-full">
     <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-      <h2 class="text-2xl font-bold mb-2 text-gray-900">Category Order</h2>
+      <h2 class="text-2xl font-bold mb-2 text-gray-900">Ordem das categorias</h2>
       <p class="text-gray-600 mb-6">
-        Arrange categories to match your store's layout. Items will be grouped in this order on your
-        shopping lists.
+        Organize as categorias de acordo com o layout do seu mercado. Os itens serão agrupados nessa
+        ordem nas suas listas de compras.
       </p>
 
       <div class="space-y-3 mb-6">
@@ -93,8 +93,8 @@ const resetOrder = async () => {
               @click="moveUp(index)"
               :disabled="index === 0"
               class="p-1.5 rounded bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
-              :title="`Move ${category.name} up`"
-              :aria-label="`Move ${category.name} up`"
+              :title="`Mover ${category.name} para cima`"
+              :aria-label="`Mover ${category.name} para cima`"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,8 +115,8 @@ const resetOrder = async () => {
               @click="moveDown(index)"
               :disabled="index === localCategories.length - 1"
               class="p-1.5 rounded bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
-              :title="`Move ${category.name} down`"
-              :aria-label="`Move ${category.name} down`"
+              :title="`Mover ${category.name} para baixo`"
+              :aria-label="`Mover ${category.name} para baixo`"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@ const resetOrder = async () => {
                 {{ category.name }}
               </div>
               <div class="text-sm text-gray-500">
-                Position {{ index + 1 }} of {{ localCategories.length }}
+                Posição {{ index + 1 }} de {{ localCategories.length }}
               </div>
             </div>
           </div>
@@ -154,11 +154,11 @@ const resetOrder = async () => {
       <div class="flex flex-col sm:flex-row gap-3">
         <BaseButton @click="saveOrder" variant="primary" :disabled="!hasChanges" class="flex-1">
           <span class="text-lg">💾</span>
-          Save Order
+          Salvar ordem
         </BaseButton>
         <BaseButton @click="resetOrder" variant="secondary" class="flex-1">
           <span class="text-lg">↺</span>
-          Reset to Default
+          Restaurar padrão
         </BaseButton>
       </div>
 
@@ -166,7 +166,7 @@ const resetOrder = async () => {
         v-if="showSuccessMessage"
         class="mt-4 p-4 bg-green-100 text-green-900 rounded-lg text-sm font-medium border border-green-200"
       >
-        <span class="text-lg mr-2">✓</span>Category order saved successfully!
+        <span class="text-lg mr-2">✓</span>Ordem das categorias salva com sucesso!
       </div>
     </div>
   </div>

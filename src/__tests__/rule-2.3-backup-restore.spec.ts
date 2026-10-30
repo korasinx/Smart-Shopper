@@ -149,7 +149,7 @@ describe('Rule 2.3: Local backup and restore', () => {
 
       const result = backup.validateBackup(incompatibleBackup)
       expect(result.valid).toBe(false)
-      expect(result.errors.some((e) => e.includes('Incompatible'))).toBe(true)
+      expect(result.errors.some((e) => e.includes('incompatível'))).toBe(true)
     })
 
     it('should validate required fields', () => {
@@ -157,7 +157,7 @@ describe('Rule 2.3: Local backup and restore', () => {
 
       const result = backup.validateBackup(null)
       expect(result.valid).toBe(false)
-      expect(result.errors.some((e) => e.includes('must be an object'))).toBe(true)
+      expect(result.errors.some((e) => e.includes('devem ser um objeto'))).toBe(true)
     })
   })
 

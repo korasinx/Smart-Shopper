@@ -37,16 +37,16 @@ const handleCreate = () => {
 
 <template>
   <BaseDialog :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)">
-    <h3 class="text-2xl font-semibold text-text mb-6">Create New List</h3>
+    <h3 class="text-2xl font-semibold text-text mb-6">Criar nova lista</h3>
     <div class="flex flex-col gap-4">
       <BaseInput
         v-model="listName"
-        placeholder="e.g., Weekly Groceries, Party Supplies..."
+        placeholder="Ex.: Compras da semana, Festa de aniversário..."
         autofocus
         @keyup.enter="handleCreate"
       />
       <div class="space-y-2">
-        <label for="list-color" class="text-sm font-medium text-text block">List Color</label>
+        <label for="list-color" class="text-sm font-medium text-text block">Cor da lista</label>
         <div class="flex items-center gap-3 p-3 bg-background rounded-xl border border-border">
           <div class="relative">
             <input
@@ -54,7 +54,7 @@ const handleCreate = () => {
               type="color"
               v-model="listColor"
               class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-              title="Choose list color"
+              title="Escolher a cor da lista"
             />
             <div
               class="w-12 h-12 rounded-lg border-2 border-border shadow-sm cursor-pointer transition-transform hover:scale-105"
@@ -63,16 +63,16 @@ const handleCreate = () => {
           </div>
           <div class="flex-1">
             <div class="text-sm font-medium text-text">{{ listColor.toUpperCase() }}</div>
-            <div class="text-xs text-text-secondary">Click to change color</div>
+            <div class="text-xs text-text-secondary">Toque para mudar a cor</div>
           </div>
         </div>
       </div>
     </div>
     <div class="flex gap-4 justify-end mt-6">
       <BaseButton variant="secondary" @click="emit('update:modelValue', false)">
-        Cancel
+        Cancelar
       </BaseButton>
-      <BaseButton @click="handleCreate" :disabled="!listName.trim()"> Create List </BaseButton>
+      <BaseButton @click="handleCreate" :disabled="!listName.trim()"> Criar lista </BaseButton>
     </div>
   </BaseDialog>
 </template>

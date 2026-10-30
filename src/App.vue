@@ -22,7 +22,7 @@ onMounted(async () => {
           <h1
             class="text-xl md:text-2xl font-bold text-white tracking-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.1)]"
           >
-            Smart Shopper
+            Lista de Compras
           </h1>
         </div>
       </div>

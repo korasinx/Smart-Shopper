@@ -38,20 +38,20 @@ const handleCreate = () => {
   <BaseDialog
     :model-value="modelValue"
     @update:model-value="emit('update:modelValue', $event)"
-    title="Create Custom Category"
+    title="Criar categoria personalizada"
   >
     <div class="flex flex-col gap-4">
       <BaseInput
         v-model="categoryName"
-        label="Category Name"
-        placeholder="e.g., Pet Supplies, Office Items..."
+        label="Nome da categoria"
+        placeholder="Ex.: Pet shop, Material de escritório..."
         autofocus
         @keyup.enter="handleCreate"
       />
 
       <div class="space-y-2">
         <label for="category-icon" class="text-sm font-medium text-text block"
-          >Category Icon (Emoji)</label
+          >Ícone da categoria (emoji)</label
         >
         <div class="flex items-center gap-3 p-3 bg-background rounded-xl border border-border">
           <div class="relative">
@@ -61,7 +61,7 @@ const handleCreate = () => {
               v-model="categoryIcon"
               maxlength="2"
               class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-              title="Enter an emoji"
+              title="Digite um emoji"
             />
             <div
               class="w-12 h-12 rounded-lg border-2 border-border shadow-sm cursor-pointer transition-transform hover:scale-105 flex items-center justify-center text-2xl bg-white"
@@ -71,7 +71,7 @@ const handleCreate = () => {
           </div>
           <div class="flex-1">
             <BaseInput v-model="categoryIcon" maxlength="2" class="text-2xl text-center" />
-            <div class="text-xs text-text-secondary mt-1">Type or paste an emoji</div>
+            <div class="text-xs text-text-secondary mt-1">Digite ou cole um emoji</div>
           </div>
         </div>
       </div>
@@ -79,10 +79,10 @@ const handleCreate = () => {
 
     <div class="flex gap-4 justify-end mt-6">
       <BaseButton variant="secondary" @click="emit('update:modelValue', false)">
-        Cancel
+        Cancelar
       </BaseButton>
       <BaseButton @click="handleCreate" :disabled="!categoryName.trim()">
-        Create Category
+        Criar categoria
       </BaseButton>
     </div>
   </BaseDialog>

@@ -72,7 +72,7 @@ onMounted(() => {
       <button
         @click="emit('update:modelValue', false)"
         class="text-current opacity-50 hover:opacity-100 transition-opacity text-lg p-1 rounded hover:bg-current/10"
-        aria-label="Close notification"
+        aria-label="Fechar notificação"
       >
         ✕
       </button>

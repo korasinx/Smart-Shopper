@@ -110,10 +110,10 @@ const initializeScanner = async () => {
         ) {
           cameraPermissionDenied.value = true
         } else {
-          error.value = err.message || 'Failed to start camera'
+          error.value = err.message || 'Não foi possível iniciar a câmera'
         }
       } else {
-        error.value = 'Failed to start camera'
+        error.value = 'Não foi possível iniciar a câmera'
       }
     }
   }
@@ -155,7 +155,7 @@ defineExpose({
   <BaseDialog :model-value="modelValue" @update:model-value="handleClose" size="large">
     <template #title>
       <span class="text-2xl">📷</span>
-      Scan Barcode
+      Ler código de barras
     </template>
 
     <div class="min-h-[400px] flex flex-col">
@@ -178,11 +178,11 @@ defineExpose({
           class="flex flex-col items-center justify-center p-8 text-center"
         >
           <span class="text-6xl mb-4">📷</span>
-          <h3 class="text-lg font-semibold mb-2">Camera Access Denied</h3>
+          <h3 class="text-lg font-semibold mb-2">Acesso à câmera negado</h3>
           <p class="text-text-secondary text-center mb-4">
-            Please allow camera access in your browser settings to scan barcodes.
+            Permita o acesso à câmera nas configurações do navegador para ler códigos de barras.
           </p>
-          <BaseButton @click="initializeScanner"> Try Again </BaseButton>
+          <BaseButton @click="initializeScanner"> Tentar novamente </BaseButton>
         </div>
 
         <!-- Barcode Not Recognized -->
@@ -191,27 +191,29 @@ defineExpose({
           class="flex flex-col items-center justify-center p-8 text-center"
         >
           <span class="text-6xl mb-4">❓</span>
-          <h3 class="text-lg font-semibold mb-2">Barcode Not Recognized</h3>
+          <h3 class="text-lg font-semibold mb-2">Código de barras não reconhecido</h3>
           <p class="text-text-secondary text-center mb-4">
-            This barcode is not in our database yet. You can try scanning again or enter the product
-            details manually.
+            Este código de barras ainda não está na nossa base. Você pode tentar ler de novo ou
+            digitar os dados do produto manualmente.
           </p>
           <div class="flex gap-3 mt-4">
             <BaseButton variant="secondary" @click="handleTryAgain" class="flex-1">
-              Scan Again
+              Ler novamente
             </BaseButton>
-            <BaseButton @click="showManualEntry = true" class="flex-1"> Enter Manually </BaseButton>
+            <BaseButton @click="showManualEntry = true" class="flex-1">
+              Digitar manualmente
+            </BaseButton>
           </div>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="flex flex-col items-center justify-center p-8 text-center">
           <span class="text-6xl mb-4">⚠️</span>
-          <h3 class="text-lg font-semibold mb-2">Scanner Error</h3>
+          <h3 class="text-lg font-semibold mb-2">Erro no leitor</h3>
           <p class="text-text-secondary text-center mb-4">
             {{ error }}
           </p>
-          <BaseButton @click="initializeScanner"> Try Again </BaseButton>
+          <BaseButton @click="initializeScanner"> Tentar novamente </BaseButton>
         </div>
 
         <!-- Scanning Instructions -->
@@ -225,7 +227,7 @@ defineExpose({
           <p
             class="mt-8 text-white text-base font-medium shadow-[0_2px_4px_rgba(0,0,0,0.5)] bg-black/60 px-4 py-2 rounded-lg"
           >
-            Position barcode within the frame
+            Posicione o código de barras dentro da moldura
           </p>
         </div>
       </div>
@@ -233,25 +235,25 @@ defineExpose({
       <!-- Manual Entry Form -->
       <div v-else class="flex flex-col gap-6 py-4">
         <p class="text-text-secondary mb-4">
-          Can't scan the barcode? Enter the product details manually:
+          Não consegue ler o código de barras? Digite os dados do produto manualmente:
         </p>
 
         <BaseInput
           v-model="manualName"
-          label="Product Name"
-          placeholder="Enter product name"
+          label="Nome do produto"
+          placeholder="Digite o nome do produto"
           required
         />
 
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between mb-2">
-            <label class="text-sm font-medium text-text">Category</label>
+            <label class="text-sm font-medium text-text">Categoria</label>
             <button
               type="button"
               @click="handleCreateCategoryRequest"
               class="text-sm text-primary hover:text-primary-dark font-medium"
             >
-              + Create Category
+              + Criar categoria
             </button>
           </div>
           <select
@@ -266,10 +268,10 @@ defineExpose({
 
         <div class="flex gap-3 mt-4">
           <BaseButton variant="secondary" @click="showManualEntry = false" class="flex-1">
-            Back
+            Voltar
           </BaseButton>
           <BaseButton @click="handleManualEntry" :disabled="!manualName.trim()" class="flex-1">
-            Add Product
+            Adicionar produto
           </BaseButton>
         </div>
       </div>
@@ -278,9 +280,9 @@ defineExpose({
     <template #actions>
       <div class="flex gap-3 justify-end w-full">
         <BaseButton v-if="!showManualEntry" variant="secondary" @click="showManualEntry = true">
-          Enter Manually
+          Digitar manualmente
         </BaseButton>
-        <BaseButton variant="secondary" @click="handleClose"> Cancel </BaseButton>
+        <BaseButton variant="secondary" @click="handleClose"> Cancelar </BaseButton>
       </div>
     </template>
   </BaseDialog>

@@ -17,10 +17,10 @@ const handleExportBackup = async () => {
   try {
     exporting.value = true
     await downloadBackup()
-    toastStore.showSuccess('Backup exported successfully!')
+    toastStore.showSuccess('Backup exportado com sucesso!')
   } catch (error) {
     console.error('Failed to export backup:', error)
-    toastStore.showError('Failed to export backup')
+    toastStore.showError('Não foi possível exportar o backup')
   } finally {
     exporting.value = false
   }
@@ -46,7 +46,7 @@ const handleConfirmImport = async () => {
   try {
     importing.value = true
     await importBackupFromFile(selectedFile.value, { merge: false })
-    toastStore.showSuccess('Backup imported successfully!')
+    toastStore.showSuccess('Backup importado com sucesso!')
 
     // Clear the file input
     if (fileInputRef.value) {
@@ -61,7 +61,9 @@ const handleConfirmImport = async () => {
   } catch (error) {
     console.error('Failed to import backup:', error)
     const errorMessage =
-      error instanceof Error ? error.message : 'Failed to import backup. Please check the file.'
+      error instanceof Error
+        ? error.message
+        : 'Não foi possível importar o backup. Confira o arquivo.'
     toastStore.showError(errorMessage)
 
     // Clear the file input on error too
@@ -77,25 +79,25 @@ const handleConfirmImport = async () => {
 
 <template>
   <BaseCard class="p-6">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">💾 Backup & Restore</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">💾 Backup e restauração</h2>
     <p class="text-gray-600 mb-6">
-      Export your lists, items, and settings to a backup file. You can restore this backup later if
-      you need to recover your data.
+      Exporte suas listas, itens e configurações para um arquivo de backup. Você poderá restaurá-lo
+      depois, se precisar recuperar seus dados.
     </p>
 
     <div class="space-y-4">
       <!-- Export Backup -->
       <div class="flex items-start gap-4">
         <div class="flex-1">
-          <h3 class="font-semibold text-gray-900 mb-1">Export Backup</h3>
+          <h3 class="font-semibold text-gray-900 mb-1">Exportar backup</h3>
           <p class="text-sm text-gray-600">
-            Download all your data as a JSON file. This includes all lists, items, custom
-            categories, products, and preferences.
+            Baixe todos os seus dados em um arquivo JSON. Inclui listas, itens, categorias
+            personalizadas, produtos e preferências.
           </p>
         </div>
         <BaseButton @click="handleExportBackup" :disabled="exporting" variant="secondary">
-          <span v-if="!exporting">📥 Export</span>
-          <span v-else>⏳ Exporting...</span>
+          <span v-if="!exporting">📥 Exportar</span>
+          <span v-else>⏳ Exportando...</span>
         </BaseButton>
       </div>
 
@@ -104,10 +106,10 @@ const handleConfirmImport = async () => {
       <!-- Import Backup -->
       <div class="flex items-start gap-4">
         <div class="flex-1">
-          <h3 class="font-semibold text-gray-900 mb-1">Import Backup</h3>
+          <h3 class="font-semibold text-gray-900 mb-1">Importar backup</h3>
           <p class="text-sm text-gray-600">
-            Restore data from a backup file. This will replace all your current data with the backup
-            contents.
+            Restaure os dados de um arquivo de backup. Isso substitui todos os seus dados atuais
+            pelo conteúdo do backup.
           </p>
         </div>
         <div class="flex flex-col gap-2">
@@ -119,8 +121,8 @@ const handleConfirmImport = async () => {
             class="hidden"
           />
           <BaseButton @click="triggerFileInput" :disabled="importing" variant="secondary">
-            <span v-if="!importing">📤 Import</span>
-            <span v-else>⏳ Importing...</span>
+            <span v-if="!importing">📤 Importar</span>
+            <span v-else>⏳ Importando...</span>
           </BaseButton>
         </div>
       </div>
@@ -130,10 +132,10 @@ const handleConfirmImport = async () => {
   <!-- Confirmation Dialog -->
   <ConfirmDialog
     v-model="showConfirm"
-    title="Import Backup?"
-    message="This will replace all your current data with the backup. Are you sure you want to continue?"
-    confirm-text="Import Backup"
-    cancel-text="Cancel"
+    title="Importar backup?"
+    message="Isso vai substituir todos os seus dados atuais pelo backup. Tem certeza de que deseja continuar?"
+    confirm-text="Importar backup"
+    cancel-text="Cancelar"
     @confirm="handleConfirmImport"
   />
 </template>

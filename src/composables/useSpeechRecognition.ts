@@ -105,7 +105,7 @@ class BrowserSpeechRecognitionAdapter implements SpeechRecognitionAdapter {
       if (!this.isSupported()) {
         const error: SpeechRecognitionError = {
           code: 'not-supported',
-          message: 'Speech recognition is not supported in this browser',
+          message: 'O reconhecimento de voz não é compatível com este navegador',
         }
         this.errorCallback?.(error)
         reject(error)
@@ -115,7 +115,7 @@ class BrowserSpeechRecognitionAdapter implements SpeechRecognitionAdapter {
       try {
         const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition
         if (!SpeechRecognitionAPI) {
-          throw new Error('Speech recognition API not available')
+          throw new Error('API de reconhecimento de voz indisponível')
         }
 
         this.recognition = new SpeechRecognitionAPI()
@@ -124,7 +124,7 @@ class BrowserSpeechRecognitionAdapter implements SpeechRecognitionAdapter {
         this.recognition.continuous = false // Stop after one sentence
         this.recognition.interimResults = true // Get partial results
         this.recognition.maxAlternatives = 1
-        this.recognition.lang = 'en-US'
+        this.recognition.lang = 'pt-BR'
 
         // Handle results
         this.recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -163,7 +163,7 @@ class BrowserSpeechRecognitionAdapter implements SpeechRecognitionAdapter {
       } catch (error) {
         const speechError: SpeechRecognitionError = {
           code: 'unknown',
-          message: error instanceof Error ? error.message : 'Unknown error occurred',
+          message: error instanceof Error ? error.message : 'Ocorreu um erro desconhecido',
         }
         this.errorCallback?.(speechError)
         reject(speechError)
@@ -210,19 +210,19 @@ class BrowserSpeechRecognitionAdapter implements SpeechRecognitionAdapter {
   private getErrorMessage(code: SpeechRecognitionErrorCode): string {
     switch (code) {
       case 'not-supported':
-        return 'Speech recognition is not supported in this browser'
+        return 'O reconhecimento de voz não é compatível com este navegador'
       case 'not-allowed':
-        return 'Microphone permission denied. Please allow microphone access to use voice input.'
+        return 'Permissão do microfone negada. Permita o acesso ao microfone para usar a entrada por voz.'
       case 'no-speech':
-        return 'No speech detected. Please try again.'
+        return 'Nenhuma fala detectada. Tente novamente.'
       case 'aborted':
-        return 'Speech recognition was aborted'
+        return 'O reconhecimento de voz foi interrompido'
       case 'audio-capture':
-        return 'Microphone not available. Please check your device settings.'
+        return 'Microfone indisponível. Confira as configurações do aparelho.'
       case 'network':
-        return 'Network error. Please check your internet connection.'
+        return 'Erro de rede. Confira sua conexão com a internet.'
       default:
-        return 'An error occurred during speech recognition'
+        return 'Ocorreu um erro durante o reconhecimento de voz'
     }
   }
 }
@@ -257,7 +257,7 @@ export function useSpeechRecognition(adapter?: SpeechRecognitionAdapter) {
     if (!isSupported.value) {
       error.value = {
         code: 'not-supported',
-        message: 'Speech recognition is not supported in this browser',
+        message: 'O reconhecimento de voz não é compatível com este navegador',
       }
       return
     }

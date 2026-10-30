@@ -26,7 +26,7 @@ export const useListsStore = defineStore('lists', () => {
     try {
       lists.value = await listsDB.getAll()
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to load lists'
+      error.value = e instanceof Error ? e.message : 'Não foi possível carregar as listas'
       console.error('Failed to load lists:', e)
     } finally {
       loading.value = false
@@ -41,7 +41,7 @@ export const useListsStore = defineStore('lists', () => {
       lists.value.push(list)
       return list
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to create list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível criar a lista'
       console.error('Failed to create list:', e)
       throw e
     } finally {
@@ -59,7 +59,7 @@ export const useListsStore = defineStore('lists', () => {
         Object.assign(list, updates, { updatedAt: Date.now() })
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to update list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível atualizar a lista'
       console.error('Failed to update list:', e)
       throw e
     } finally {
@@ -86,7 +86,7 @@ export const useListsStore = defineStore('lists', () => {
         list.updatedAt = Date.now()
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to archive list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível arquivar a lista'
       console.error('Failed to archive list:', e)
       throw e
     } finally {
@@ -105,7 +105,7 @@ export const useListsStore = defineStore('lists', () => {
         list.updatedAt = Date.now()
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to unarchive list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível desarquivar a lista'
       console.error('Failed to unarchive list:', e)
       throw e
     } finally {
@@ -120,7 +120,7 @@ export const useListsStore = defineStore('lists', () => {
       await listsDB.remove(id)
       lists.value = lists.value.filter((list) => list.id !== id)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to delete list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível excluir a lista'
       console.error('Failed to delete list:', e)
       throw e
     } finally {
@@ -136,7 +136,7 @@ export const useListsStore = defineStore('lists', () => {
       lists.value.push(newList)
       return newList
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to duplicate list'
+      error.value = e instanceof Error ? e.message : 'Não foi possível duplicar a lista'
       console.error('Failed to duplicate list:', e)
       throw e
     } finally {

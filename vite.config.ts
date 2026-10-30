@@ -25,9 +25,11 @@ export default defineConfig(({ mode }) => ({
         navigateFallback: 'index.html',
       },
       manifest: {
-        name: 'Smart Shopping List',
-        short_name: 'Smart Shopper',
-        description: 'Offline-first shopping list with barcode scanning and voice input',
+        name: 'Lista de Compras',
+        short_name: 'Compras',
+        description:
+          'Lista de compras que funciona offline, com leitura de código de barras e entrada por voz',
+        lang: 'pt-BR',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -50,9 +52,9 @@ export default defineConfig(({ mode }) => ({
         ],
         shortcuts: [
           {
-            name: 'Add Items',
-            short_name: 'Add',
-            description: 'Quickly add items to your shopping list',
+            name: 'Adicionar itens',
+            short_name: 'Adicionar',
+            description: 'Adicione itens rapidamente à sua lista de compras',
             url: './?action=add',
             icons: [
               {
@@ -63,9 +65,9 @@ export default defineConfig(({ mode }) => ({
             ],
           },
           {
-            name: 'Voice Input',
-            short_name: 'Voice',
-            description: 'Add items using voice input',
+            name: 'Entrada por voz',
+            short_name: 'Voz',
+            description: 'Adicione itens falando',
             url: './?action=voice',
             icons: [
               {

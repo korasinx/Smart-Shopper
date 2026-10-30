@@ -65,7 +65,7 @@ export function useListsDB() {
   const duplicate = async (id: string): Promise<ShoppingList> => {
     const original = await db.lists.get(id)
     if (!original) {
-      throw new Error('List not found')
+      throw new Error('Lista não encontrada')
     }
 
     const newList: ShoppingList = {

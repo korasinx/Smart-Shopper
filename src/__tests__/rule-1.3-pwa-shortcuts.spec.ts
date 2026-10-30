@@ -36,7 +36,7 @@ describe('Rule 1.3: Hands-free entry using shortcuts', () => {
       expect(manifest.shortcuts.length).toBeGreaterThanOrEqual(2)
     })
 
-    it('should have "Add Items" shortcut with correct URL', () => {
+    it('should have "Adicionar itens" shortcut with correct URL', () => {
       if (!fs.existsSync(manifestPath)) {
         expect(true).toBe(true)
         return
@@ -46,18 +46,18 @@ describe('Rule 1.3: Hands-free entry using shortcuts', () => {
       const manifest: PWAManifest = JSON.parse(manifestContent)
 
       const addItemsShortcut = manifest.shortcuts.find(
-        (s: ManifestShortcut) => s.name === 'Add Items',
+        (s: ManifestShortcut) => s.name === 'Adicionar itens',
       )
 
       expect(addItemsShortcut).toBeDefined()
       if (addItemsShortcut) {
-        expect(addItemsShortcut.url).toBe('/?action=add')
-        expect(addItemsShortcut.short_name).toBe('Add')
-        expect(addItemsShortcut.description.toLowerCase()).toContain('add')
+        expect(addItemsShortcut.url).toBe('./?action=add')
+        expect(addItemsShortcut.short_name).toBe('Adicionar')
+        expect(addItemsShortcut.description.toLowerCase()).toContain('adicion')
       }
     })
 
-    it('should have "Voice Input" shortcut with correct URL', () => {
+    it('should have "Entrada por voz" shortcut with correct URL', () => {
       if (!fs.existsSync(manifestPath)) {
         expect(true).toBe(true)
         return
@@ -67,14 +67,14 @@ describe('Rule 1.3: Hands-free entry using shortcuts', () => {
       const manifest: PWAManifest = JSON.parse(manifestContent)
 
       const voiceShortcut = manifest.shortcuts.find(
-        (s: ManifestShortcut) => s.name === 'Voice Input',
+        (s: ManifestShortcut) => s.name === 'Entrada por voz',
       )
 
       expect(voiceShortcut).toBeDefined()
       if (voiceShortcut) {
-        expect(voiceShortcut.url).toBe('/?action=voice')
-        expect(voiceShortcut.short_name).toBe('Voice')
-        expect(voiceShortcut.description.toLowerCase()).toContain('voice')
+        expect(voiceShortcut.url).toBe('./?action=voice')
+        expect(voiceShortcut.short_name).toBe('Voz')
+        expect(voiceShortcut.description.toLowerCase()).toContain('falando')
       }
     })
 

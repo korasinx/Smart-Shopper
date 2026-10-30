@@ -60,7 +60,7 @@ const handleArchiveList = async (id: string) => {
   try {
     const list = listsStore.getListById(id)
     await listsStore.archiveList(id)
-    toastStore.showSuccess(`List "${list?.name}" archived successfully!`)
+    toastStore.showSuccess(`Lista "${list?.name}" arquivada!`)
   } catch (error) {
     console.error('Failed to archive list:', error)
   }
@@ -70,7 +70,7 @@ const handleUnarchiveList = async (id: string) => {
   try {
     const list = listsStore.getListById(id)
     await listsStore.unarchiveList(id)
-    toastStore.showSuccess(`List "${list?.name}" unarchived successfully!`)
+    toastStore.showSuccess(`Lista "${list?.name}" desarquivada!`)
   } catch (error) {
     console.error('Failed to unarchive list:', error)
   }
@@ -87,7 +87,7 @@ const confirmDelete = async () => {
   try {
     const list = listsStore.getListById(listToDelete.value)
     await listsStore.deleteList(listToDelete.value)
-    toastStore.showSuccess(`List "${list?.name}" deleted successfully!`)
+    toastStore.showSuccess(`Lista "${list?.name}" excluída!`)
     listToDelete.value = null
   } catch (error) {
     console.error('Failed to delete list:', error)
@@ -110,7 +110,7 @@ const handleImport = async (event: Event) => {
 
     // Create the imported list
     const importedList = await listsStore.createList(
-      `${list.name} (imported)`,
+      `${list.name} (importada)`,
       list.color || '#4CAF50',
     )
 
@@ -130,7 +130,9 @@ const handleImport = async (event: Event) => {
   } catch (error) {
     console.error('Failed to import list:', error)
     toastStore.showError(
-      error instanceof Error ? error.message : 'Failed to import list. Please check the file.',
+      error instanceof Error
+        ? error.message
+        : 'Não foi possível importar a lista. Confira o arquivo.',
     )
   } finally {
     // Reset file input
@@ -146,12 +148,12 @@ const navigateToSettings = () => {
 <template>
   <div class="w-full animate-[fadeIn_0.3s_ease-out]">
     <!-- Header -->
-    <ViewHeader title="My Lists" subtitle="Organize your shopping efficiently">
+    <ViewHeader title="Minhas listas" subtitle="Organize suas compras com facilidade">
       <template #action>
         <div class="flex gap-2 flex-wrap max-md:flex-col max-md:w-full">
           <BaseButton @click="showCreateDialog = true" class="max-md:w-full">
             <span class="text-lg">+</span>
-            New List
+            Nova lista
           </BaseButton>
           <BaseButton as="label" variant="secondary" class="max-md:w-full">
             <input
@@ -159,14 +161,14 @@ const navigateToSettings = () => {
               accept=".json"
               @change="handleImport"
               class="hidden"
-              aria-label="Import list from JSON"
+              aria-label="Importar lista de um arquivo JSON"
             />
             <span class="text-lg">📥</span>
-            Import JSON
+            Importar JSON
           </BaseButton>
-          <BaseButton @click="navigateToSettings" variant="secondary" title="Settings">
+          <BaseButton @click="navigateToSettings" variant="secondary" title="Configurações">
             <span class="text-lg">⚙️</span>
-            Settings
+            Configurações
           </BaseButton>
         </div>
       </template>
@@ -187,29 +189,29 @@ const navigateToSettings = () => {
     <!-- Delete Confirmation Dialog -->
     <ConfirmDialog
       v-model="showDeleteConfirm"
-      title="Delete List?"
-      message="Are you sure you want to delete this list? This action cannot be undone and all items will be permanently removed."
-      confirm-text="Delete"
-      cancel-text="Cancel"
+      title="Excluir lista?"
+      message="Tem certeza de que deseja excluir esta lista? Esta ação não pode ser desfeita e todos os itens serão removidos."
+      confirm-text="Excluir"
+      cancel-text="Cancelar"
       confirm-variant="danger"
       @confirm="confirmDelete"
       @cancel="cancelDelete"
     />
 
     <!-- Loading State -->
-    <LoadingSpinner v-if="listsStore.loading" message="Loading your lists..." />
+    <LoadingSpinner v-if="listsStore.loading" message="Carregando suas listas..." />
 
     <!-- Empty State -->
     <EmptyState
       v-else-if="listsStore.activeLists.length === 0"
       icon="🛒"
-      title="No lists yet"
-      description="Create your first shopping list to get started!"
+      title="Nenhuma lista ainda"
+      description="Crie sua primeira lista de compras para começar!"
     >
       <template #action>
         <BaseButton @click="showCreateDialog = true">
           <span class="text-lg">+</span>
-          Create Your First List
+          Criar minha primeira lista
         </BaseButton>
       </template>
     </EmptyState>
@@ -240,7 +242,7 @@ const navigateToSettings = () => {
         @click="showArchived = !showArchived"
       >
         <span class="text-sm transition-transform">{{ showArchived ? '▼' : '▶' }}</span>
-        <span class="flex-1">Archived Lists</span>
+        <span class="flex-1">Listas arquivadas</span>
         <span
           class="bg-background text-text-secondary px-2 py-1 rounded-full text-sm font-semibold min-w-[24px] text-center"
         >

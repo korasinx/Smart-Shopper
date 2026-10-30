@@ -72,21 +72,21 @@ onMounted(async () => {
 
   // Check if we just imported this list
   if (route.query.imported === 'true') {
-    toastStore.showSuccess('List imported successfully!')
+    toastStore.showSuccess('Lista importada com sucesso!')
     router.replace({ query: {} })
   }
 
   // Check if we just created this list
   if (route.query.created === 'true') {
     const listName = route.query.name as string
-    toastStore.showSuccess(`List "${listName}" created successfully!`)
+    toastStore.showSuccess(`Lista "${listName}" criada!`)
     router.replace({ query: {} })
   }
 
   // Check if we just duplicated this list
   if (route.query.duplicated === 'true') {
     const originalName = route.query.name as string
-    toastStore.showSuccess(`List "${originalName}" duplicated successfully!`)
+    toastStore.showSuccess(`Lista "${originalName}" duplicada!`)
     router.replace({ query: {} })
   }
 
@@ -186,7 +186,7 @@ const handleScan = async (result: ScanResult) => {
       // Known product - add to list with preferred/saved category
       await itemsStore.createItem(listId, product.name, categoryToUse)
       await productsStore.updateLastUsed(product.barcode)
-      toastStore.showSuccess(`Added "${product.name}" from barcode`)
+      toastStore.showSuccess(`"${product.name}" adicionado pelo código de barras`)
 
       // Update product's category if user has changed preference
       if (preferredCategory && preferredCategory !== product.category) {
@@ -205,7 +205,7 @@ const handleScan = async (result: ScanResult) => {
     }
   } catch (error) {
     console.error('Failed to process barcode:', error)
-    toastStore.showError('Failed to process barcode')
+    toastStore.showError('Não foi possível processar o código de barras')
   }
 }
 
@@ -213,7 +213,7 @@ const handleManualEntry = async (name: string, category: string) => {
   try {
     const sanitized = sanitizeItemName(name)
     await itemsStore.createItem(listId, sanitized, category)
-    toastStore.showSuccess(`Added "${sanitized}"`)
+    toastStore.showSuccess(`"${sanitized}" adicionado`)
 
     // If we have a last scanned barcode, save it to products database for future use
     const lastBarcode = scannerModalRef.value?.lastScannedBarcode
@@ -229,7 +229,7 @@ const handleManualEntry = async (name: string, category: string) => {
     showScanner.value = false
   } catch (error) {
     console.error('Failed to add item:', error)
-    toastStore.showError('Failed to add item')
+    toastStore.showError('Não foi possível adicionar o item')
   }
 }
 
@@ -239,7 +239,7 @@ const handleVoiceInput = async (transcript: string) => {
     const parsedItems = parseItemsFromText(transcript)
 
     if (parsedItems.length === 0) {
-      toastStore.showError('Could not parse any items from voice input')
+      toastStore.showError('Não entendi nenhum item na fala')
       return
     }
 
@@ -255,11 +255,11 @@ const handleVoiceInput = async (transcript: string) => {
 
     // Show success message
     const itemCount = parsedItems.length
-    const itemWord = itemCount === 1 ? 'item' : 'items'
-    toastStore.showSuccess(`Added ${itemCount} ${itemWord}`)
+    const itemWord = itemCount === 1 ? 'item adicionado' : 'itens adicionados'
+    toastStore.showSuccess(`${itemCount} ${itemWord}`)
   } catch (error) {
     console.error('Failed to add voice items:', error)
-    toastStore.showError('Failed to add items from voice input')
+    toastStore.showError('Não foi possível adicionar os itens falados')
   }
 }
 
@@ -288,11 +288,11 @@ const confirmClearCompleted = async () => {
     const completedCount = itemsStore.getCompletedCount(listId)
     await itemsStore.removeCompletedItems(listId)
     toastStore.showSuccess(
-      `Removed ${completedCount} completed ${completedCount === 1 ? 'item' : 'items'}`,
+      `${completedCount} ${completedCount === 1 ? 'item concluído removido' : 'itens concluídos removidos'}`,
     )
   } catch (error) {
     console.error('Failed to remove completed items:', error)
-    toastStore.showError('Failed to remove completed items')
+    toastStore.showError('Não foi possível remover os itens concluídos')
   }
 }
 
@@ -310,7 +310,7 @@ const handleRename = async () => {
   try {
     const oldName = list.value.name
     await listsStore.renameList(listId, newListName.value.trim(), newListColor.value)
-    toastStore.showSuccess(`List renamed from "${oldName}" to "${newListName.value.trim()}"!`)
+    toastStore.showSuccess(`Lista renomeada de "${oldName}" para "${newListName.value.trim()}"!`)
     isRenaming.value = false
   } catch (error) {
     console.error('Failed to rename list:', error)
@@ -323,11 +323,11 @@ const handleShare = async () => {
   try {
     const success = await shareList(list.value, items.value)
     if (success) {
-      toastStore.showSuccess('List shared/copied successfully!')
+      toastStore.showSuccess('Lista compartilhada/copiada!')
     }
   } catch (error) {
     console.error('Failed to share list:', error)
-    toastStore.showError('Failed to share list. Please try again.')
+    toastStore.showError('Não foi possível compartilhar a lista. Tente novamente.')
   }
 }
 
@@ -338,10 +338,10 @@ const handleExport = () => {
     const json = exportListAsJSON(list.value, items.value)
     const filename = `${list.value.name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${Date.now()}.json`
     downloadJSON(filename, json)
-    toastStore.showSuccess('List exported successfully!')
+    toastStore.showSuccess('Lista exportada com sucesso!')
   } catch (error) {
     console.error('Failed to export list:', error)
-    toastStore.showError('Failed to export list. Please try again.')
+    toastStore.showError('Não foi possível exportar a lista. Tente novamente.')
   }
 }
 </script>
@@ -364,7 +364,7 @@ const handleExport = () => {
         <h1 class="text-3xl md:text-4xl font-bold text-white flex-1 wrap-break-word">
           {{ list.name }}
         </h1>
-        <IconButton variant="icon" icon="✏️" title="Edit list name" @click="startRenaming" />
+        <IconButton variant="icon" icon="✏️" title="Editar nome da lista" @click="startRenaming" />
       </div>
 
       <div v-else class="mb-6">
@@ -377,7 +377,7 @@ const handleExport = () => {
         />
         <div class="space-y-2 mb-4">
           <label for="edit-list-color" class="text-sm font-medium text-white block"
-            >List Color</label
+            >Cor da lista</label
           >
           <div
             class="flex items-center gap-3 p-3 bg-white/10 rounded-xl border border-white/20 backdrop-blur-sm"
@@ -388,7 +388,7 @@ const handleExport = () => {
                 type="color"
                 v-model="newListColor"
                 class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-                title="Choose list color"
+                title="Escolher a cor da lista"
               />
               <div
                 class="w-12 h-12 rounded-lg border-2 border-white/30 shadow-sm cursor-pointer transition-transform hover:scale-105"
@@ -397,13 +397,13 @@ const handleExport = () => {
             </div>
             <div class="flex-1">
               <div class="text-sm font-medium text-white">{{ newListColor.toUpperCase() }}</div>
-              <div class="text-xs text-white/70">Click to change color</div>
+              <div class="text-xs text-white/70">Toque para mudar a cor</div>
             </div>
           </div>
         </div>
         <div class="flex gap-2 justify-end">
-          <BaseButton variant="secondary" @click="isRenaming = false"> Cancel </BaseButton>
-          <BaseButton @click="handleRename"> Save </BaseButton>
+          <BaseButton variant="secondary" @click="isRenaming = false"> Cancelar </BaseButton>
+          <BaseButton @click="handleRename"> Salvar </BaseButton>
         </div>
       </div>
 
@@ -416,13 +416,13 @@ const handleExport = () => {
           </div>
           <div class="flex flex-col items-center gap-1">
             <span class="text-3xl font-bold text-white leading-none">{{ completedCount }}</span>
-            <span class="text-sm text-white/90 uppercase tracking-wide">Done</span>
+            <span class="text-sm text-white/90 uppercase tracking-wide">Feitos</span>
           </div>
           <div class="flex flex-col items-center gap-1">
             <span class="text-3xl font-bold text-white leading-none"
               >{{ progressPercentage }}%</span
             >
-            <span class="text-sm text-white/90 uppercase tracking-wide">Complete</span>
+            <span class="text-sm text-white/90 uppercase tracking-wide">Concluído</span>
           </div>
         </div>
         <div
@@ -439,13 +439,13 @@ const handleExport = () => {
     <!-- Quick Add Card -->
     <BaseCard padding="md" class="mb-6">
       <div class="flex items-center gap-2 mb-4">
-        <span class="text-lg font-semibold text-text">Quick Add</span>
+        <span class="text-lg font-semibold text-text">Adicionar rápido</span>
       </div>
       <div class="flex gap-2 max-md:flex-col">
         <BaseInput
           id="quick-add-input"
           v-model="quickAddInput"
-          placeholder="e.g., milk, bread, eggs or type multiple items..."
+          placeholder="Ex.: leite, pão, ovos ou vários itens de uma vez..."
           class="flex-1"
           @keyup.enter="handleQuickAdd"
         />
@@ -455,19 +455,19 @@ const handleExport = () => {
               @click="showVoice = true"
               variant="secondary"
               class="whitespace-nowrap max-md:flex-1"
-              title="Voice input"
+              title="Entrada por voz"
             >
               <span class="text-lg">🎤</span>
-              Voice
+              Voz
             </BaseButton>
             <BaseButton
               @click="showScanner = true"
               variant="secondary"
               class="whitespace-nowrap max-md:flex-1"
-              title="Scan barcode"
+              title="Ler código de barras"
             >
               <span class="text-lg">📷</span>
-              Scan
+              Ler código
             </BaseButton>
           </div>
           <BaseButton
@@ -478,7 +478,7 @@ const handleExport = () => {
               background: `linear-gradient(to bottom right, ${listColor}, ${listColorDark})`,
             }"
           >
-            Add Items
+            Adicionar itens
           </BaseButton>
         </div>
       </div>
@@ -488,11 +488,11 @@ const handleExport = () => {
     <div class="mb-6 flex gap-2 flex-wrap max-sm:justify-between">
       <BaseButton variant="secondary" @click="handleShare" class="flex items-center gap-2">
         <span class="text-lg">📤</span>
-        Share List
+        Compartilhar lista
       </BaseButton>
       <BaseButton variant="secondary" @click="handleExport" class="flex items-center gap-2">
         <span class="text-lg">💾</span>
-        Export JSON
+        Exportar JSON
       </BaseButton>
     </div>
 
@@ -509,17 +509,17 @@ const handleExport = () => {
     <div v-if="completedCount > 0" class="mb-6 flex justify-end">
       <BaseButton variant="danger" @click="handleRemoveCompleted">
         <span class="text-lg">🗑️</span>
-        Clear Completed ({{ completedCount }})
+        Limpar concluídos ({{ completedCount }})
       </BaseButton>
     </div>
 
     <!-- Clear Completed Confirmation Dialog -->
     <ConfirmDialog
       v-model="showClearConfirm"
-      title="Clear Completed Items?"
-      message="Are you sure you want to remove all completed items? This action cannot be undone."
-      confirm-text="Clear Items"
-      cancel-text="Cancel"
+      title="Limpar itens concluídos?"
+      message="Tem certeza de que deseja remover todos os itens concluídos? Esta ação não pode ser desfeita."
+      confirm-text="Limpar itens"
+      cancel-text="Cancelar"
       confirm-variant="danger"
       @confirm="confirmClearCompleted"
     />
@@ -531,8 +531,8 @@ const handleExport = () => {
     <EmptyState
       v-if="totalCount === 0"
       icon="📝"
-      title="Start your shopping list"
-      description="Add items using the quick add box above. You can add multiple items at once!"
+      title="Comece sua lista de compras"
+      description="Adicione itens pela caixa acima. Você pode colocar vários de uma vez!"
     />
 
     <!-- Items by Category -->
@@ -563,5 +563,5 @@ const handleExport = () => {
   </div>
 
   <!-- Loading State -->
-  <LoadingSpinner v-else message="Loading list..." />
+  <LoadingSpinner v-else message="Carregando lista..." />
 </template>

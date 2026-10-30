@@ -45,7 +45,7 @@ export const useCategoriesStore = defineStore('categories', () => {
     if (!category) {
       // Fallback to 'Other' if category not found
       const otherCat = getCategoryById('other')
-      return otherCat ? `${otherCat.icon} ${otherCat.name}` : '📦 Other'
+      return otherCat ? `${otherCat.icon} ${otherCat.name}` : '📦 Outros'
     }
     return `${category.icon} ${category.name}`
   }
@@ -61,7 +61,8 @@ export const useCategoriesStore = defineStore('categories', () => {
       // Sort by sortOrder
       customCategories.value = categories.sort((a, b) => a.sortOrder - b.sortOrder)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to load custom categories'
+      error.value =
+        e instanceof Error ? e.message : 'Não foi possível carregar as categorias personalizadas'
       console.error('Failed to load custom categories:', e)
     } finally {
       loading.value = false
@@ -123,7 +124,7 @@ export const useCategoriesStore = defineStore('categories', () => {
 
       return category
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to create category'
+      error.value = e instanceof Error ? e.message : 'Não foi possível criar a categoria'
       console.error('Failed to create category:', e)
       throw e
     } finally {
@@ -144,7 +145,7 @@ export const useCategoriesStore = defineStore('categories', () => {
         Object.assign(category, updates)
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to update category'
+      error.value = e instanceof Error ? e.message : 'Não foi possível atualizar a categoria'
       console.error('Failed to update category:', e)
       throw e
     } finally {
@@ -162,7 +163,7 @@ export const useCategoriesStore = defineStore('categories', () => {
       await db.categories.delete(id)
       customCategories.value = customCategories.value.filter((cat) => cat.id !== id)
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Failed to delete category'
+      error.value = e instanceof Error ? e.message : 'Não foi possível excluir a categoria'
       console.error('Failed to delete category:', e)
       throw e
     } finally {

@@ -150,7 +150,7 @@ export function useBarcodeScanner() {
         onDetected(result)
       })
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to start scanning'
+      error.value = err instanceof Error ? err.message : 'Não foi possível iniciar a leitura'
       isScanning.value = false
       throw err
     }

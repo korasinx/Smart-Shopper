@@ -80,7 +80,7 @@ const confirm = () => {
             'bg-primary hover:bg-primary-dark': !isListening && isSupported,
             'bg-gray-300 cursor-not-allowed': !isSupported,
           }"
-          :title="isListening ? 'Stop listening' : 'Start listening'"
+          :title="isListening ? 'Parar de ouvir' : 'Começar a ouvir'"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -108,18 +108,18 @@ const confirm = () => {
       <!-- Status Text -->
       <div class="text-center">
         <p v-if="!isSupported" class="text-gray-600 font-medium">
-          Speech recognition is not supported in your browser
+          O reconhecimento de voz não é compatível com este navegador
         </p>
         <p v-else-if="isListening" class="text-gray-900 font-medium text-lg">
-          Listening... Speak now
+          Ouvindo... Pode falar
         </p>
-        <p v-else class="text-gray-600 font-medium">Tap the microphone to start</p>
+        <p v-else class="text-gray-600 font-medium">Toque no microfone para começar</p>
       </div>
 
       <!-- Transcript Display -->
       <div v-if="transcript" class="w-full">
         <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <p class="text-sm text-gray-500 mb-2 font-medium">Transcript:</p>
+          <p class="text-sm text-gray-500 mb-2 font-medium">Texto reconhecido:</p>
           <p class="text-gray-900 text-lg">{{ transcript }}</p>
         </div>
       </div>
@@ -143,7 +143,7 @@ const confirm = () => {
               />
             </svg>
             <div class="flex-1">
-              <p class="text-sm font-medium text-red-900 mb-1">Error</p>
+              <p class="text-sm font-medium text-red-900 mb-1">Erro</p>
               <p class="text-sm text-red-800">{{ error.message }}</p>
             </div>
           </div>
@@ -155,10 +155,10 @@ const confirm = () => {
         v-if="!error && !transcript && isSupported"
         class="w-full text-center text-sm text-gray-500"
       >
-        <p>Try saying:</p>
-        <p class="mt-2 italic">"Milk and eggs"</p>
-        <p class="italic">"Add bananas, bread, and cheese"</p>
-        <p class="italic">"Tomatoes and lettuce"</p>
+        <p>Experimente dizer:</p>
+        <p class="mt-2 italic">"Leite e ovos"</p>
+        <p class="italic">"Adicionar bananas, pão e queijo"</p>
+        <p class="italic">"Tomates e alface"</p>
       </div>
 
       <!-- Action Buttons -->
@@ -178,10 +178,10 @@ const confirm = () => {
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
-          Try Again
+          Tentar novamente
         </BaseButton>
 
-        <BaseButton @click="cancel" variant="secondary"> Cancel </BaseButton>
+        <BaseButton @click="cancel" variant="secondary"> Cancelar </BaseButton>
 
         <BaseButton
           v-if="transcript && !isListening"
@@ -203,7 +203,7 @@ const confirm = () => {
               d="M5 13l4 4L19 7"
             />
           </svg>
-          Add Items
+          Adicionar itens
         </BaseButton>
       </div>
     </div>
