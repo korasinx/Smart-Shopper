@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useListsStore } from '@/stores/lists'
 import { useItemsStore } from '@/stores/items'
+import { groupItemsByCategory } from '@/utils/items'
 import { useProductsStore } from '@/stores/products'
 import { useCategoriesStore } from '@/stores/categories'
 import { useToastNotifications } from '@/composables/useToastNotifications'
@@ -22,11 +23,11 @@ import {
   ConfirmDialog,
   IconButton,
   CategorySection,
+  ListSummaryBar,
   CreateCategoryDialog,
   BarcodeScannerModal,
   VoiceInputModal,
 } from '@/components'
-import type { ShoppingItem } from '@/db'
 
 const route = useRoute()
 const router = useRouter()
@@ -111,39 +112,12 @@ onMounted(async () => {
   }
 })
 
-const itemsByCategory = computed(() => {
-  const grouped: Record<string, ShoppingItem[]> = {}
-
-  items.value.forEach((item) => {
-    if (!grouped[item.category]) {
-      grouped[item.category] = []
-    }
-    grouped[item.category]!.push(item)
-  })
-
-  // Sort items within each category: incomplete items first, completed items last
-  Object.keys(grouped).forEach((category) => {
-    grouped[category] = grouped[category]!.sort((a, b) => {
-      // If completion status is different, incomplete items come first
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1
-      }
-      // If both have same completion status, maintain original order (by addedAt)
-      return a.addedAt - b.addedAt
-    })
-  })
-
-  // Return categories in sorted order from store
-  return categoriesStore.sortedCategories.reduce(
-    (acc: Record<string, ShoppingItem[]>, category) => {
-      if (grouped[category.id]) {
-        acc[category.id] = grouped[category.id]!
-      }
-      return acc
-    },
-    {} as Record<string, ShoppingItem[]>,
-  )
-})
+const itemsByCategory = computed(() =>
+  groupItemsByCategory(
+    items.value,
+    categoriesStore.sortedCategories.map((category) => category.id),
+  ),
+)
 
 const completedCount = computed(() => itemsStore.getCompletedCount(listId))
 const totalCount = computed(() => itemsStore.getTotalCount(listId))
@@ -260,6 +234,24 @@ const handleVoiceInput = async (transcript: string) => {
   } catch (error) {
     console.error('Failed to add voice items:', error)
     toastStore.showError('Não foi possível adicionar os itens falados')
+  }
+}
+
+const handleSetPrice = async (itemId: string, price: number | undefined) => {
+  try {
+    await itemsStore.updateItem(listId, itemId, { price })
+  } catch (error) {
+    console.error('Failed to save price:', error)
+    toastStore.showError('Não foi possível salvar o preço')
+  }
+}
+
+const handleSetBudget = async (budget: number | undefined) => {
+  try {
+    await listsStore.updateList(listId, { budget })
+  } catch (error) {
+    console.error('Failed to save budget:', error)
+    toastStore.showError('Não foi possível salvar o limite')
   }
 }
 
@@ -536,7 +528,7 @@ const handleExport = () => {
     />
 
     <!-- Items by Category -->
-    <div v-else class="flex flex-col gap-4">
+    <div v-else class="flex flex-col gap-4 pb-4">
       <CategorySection
         v-for="(categoryItems, categoryId) in itemsByCategory"
         :key="categoryId"
@@ -547,8 +539,17 @@ const handleExport = () => {
         @delete-item="handleDeleteItem"
         @change-category="handleChangeCategory"
         @create-category="handleCreateCategoryRequest"
+        @set-price="handleSetPrice"
       />
     </div>
+
+    <!-- Soma da lista e limite de gasto -->
+    <ListSummaryBar
+      v-if="totalCount > 0"
+      :items="items"
+      :budget="list.budget"
+      @set-budget="handleSetBudget"
+    />
 
     <!-- Barcode Scanner Modal -->
     <BarcodeScannerModal

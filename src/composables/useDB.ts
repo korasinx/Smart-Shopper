@@ -75,6 +75,7 @@ export function useListsDB() {
       updatedAt: Date.now(),
       archived: false,
       color: original.color,
+      ...(original.budget !== undefined && { budget: original.budget }),
     }
     await db.lists.add(newList)
 

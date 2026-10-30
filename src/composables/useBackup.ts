@@ -15,6 +15,9 @@ export interface BackupData {
   categoryOrder: string[]
 }
 
+const isValidMoney = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0
+
 export interface BackupValidationResult {
   valid: boolean
   errors: string[]
@@ -205,10 +208,22 @@ export function useBackup() {
         await listsStore.archiveList(newList.id)
       }
 
+      if (isValidMoney(list.budget)) {
+        await listsStore.updateList(newList.id, { budget: list.budget })
+      }
+
       // Restore items for this list
       const listItems = backupData.items.filter((item) => item.listId === list.id)
       for (const item of listItems) {
         const newItem = await itemsStore.createItem(newList.id, item.name, item.category)
+
+        // Restore quantity and optional price (old backups have no price)
+        const extras: Partial<ShoppingItem> = {}
+        if (typeof item.quantity === 'number' && item.quantity > 1) extras.quantity = item.quantity
+        if (isValidMoney(item.price)) extras.price = item.price
+        if (Object.keys(extras).length > 0) {
+          await itemsStore.updateItem(newList.id, newItem.id, extras)
+        }
 
         // Restore item properties
         if (item.completed) {
@@ -216,7 +231,7 @@ export function useBackup() {
         }
 
         // Note: We can't restore exact timestamps or IDs as they're auto-generated
-        // But the important data (name, category, completed state) is preserved
+        // But the important data (name, category, price, completed state) is preserved
       }
     }
 

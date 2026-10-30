@@ -7,6 +7,8 @@ export interface ShoppingList {
   updatedAt: number
   archived: boolean
   color?: string
+  /** limite de gasto em reais (opcional, não indexado) */
+  budget?: number
 }
 
 export interface ShoppingItem {
@@ -21,6 +23,8 @@ export interface ShoppingItem {
   completedAt?: number
   barcode?: string
   notes?: string
+  /** preço unitário em reais (opcional, não indexado) */
+  price?: number
 }
 
 export interface Category {

@@ -2,6 +2,8 @@
 import type { ShoppingItem } from '@/db'
 import { useCategoriesStore } from '@/stores/categories'
 import { IconButton } from '@/components'
+import PriceEditor from '@/components/PriceEditor.vue'
+import { formatBRL } from '@/utils/money'
 
 interface Props {
   categoryId: string
@@ -18,6 +20,7 @@ const emit = defineEmits<{
   deleteItem: [id: string]
   changeCategory: [itemId: string, newCategory: string]
   createCategory: []
+  setPrice: [id: string, price: number | undefined]
 }>()
 
 const categoriesStore = useCategoriesStore()
@@ -47,70 +50,87 @@ const categoriesStore = useCategoriesStore()
       <div
         v-for="item in items"
         :key="item.id"
-        class="group flex items-center gap-4 px-6 py-4 border-b border-border last:border-b-0 transition-all duration-200 hover:bg-background max-md:px-4"
+        role="checkbox"
+        :aria-checked="item.completed"
+        :aria-label="item.name"
+        tabindex="0"
+        class="group flex items-center gap-4 max-md:gap-3 min-h-14 px-6 py-4 max-md:py-3 border-b border-border last:border-b-0 cursor-pointer select-none transition-all duration-200 hover:bg-background focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/50 max-md:px-4"
         :class="{ 'opacity-50': item.completed }"
+        @click="emit('toggleItem', item.id)"
+        @keydown.enter.self.prevent="emit('toggleItem', item.id)"
+        @keydown.space.self.prevent="emit('toggleItem', item.id)"
       >
-        <!-- Custom Checkbox -->
-        <label class="relative cursor-pointer flex items-center">
-          <input
-            type="checkbox"
-            :checked="item.completed"
-            @change="emit('toggleItem', item.id)"
-            class="absolute opacity-0 w-0 h-0 peer"
-          />
-          <span
-            class="w-6 h-6 border-2 border-border rounded-md flex items-center justify-center transition-all duration-200 bg-white hover:scale-110 after:content-['✓'] after:text-white after:font-bold after:opacity-0 peer-checked:after:opacity-100"
-            :style="{
-              backgroundColor: item.completed ? listColor : 'white',
-              borderColor: item.completed ? listColor : '',
-            }"
-            :class="{ [`hover:border-[${listColor}]`]: !item.completed }"
-          ></span>
-        </label>
+        <!-- Caixinha (só visual: quem risca é a linha inteira) -->
+        <span
+          aria-hidden="true"
+          class="w-6 h-6 shrink-0 border-2 border-border rounded-md flex items-center justify-center transition-all duration-200 bg-white text-white font-bold"
+          :style="{
+            backgroundColor: item.completed ? listColor : 'white',
+            borderColor: item.completed ? listColor : '',
+          }"
+        >
+          <span :class="item.completed ? 'opacity-100' : 'opacity-0'">✓</span>
+        </span>
 
         <!-- Item Info -->
-        <div class="flex-1 flex flex-col gap-1">
+        <div class="flex-1 min-w-0 flex flex-col gap-1">
           <span
-            class="text-base text-text font-medium"
+            class="text-base text-text font-medium break-words"
             :class="{ 'line-through text-text-secondary': item.completed }"
           >
             {{ item.name }}
           </span>
-          <span v-if="item.quantity > 1" class="text-sm text-text-secondary">
+          <span
+            v-if="item.price !== undefined && item.quantity > 1"
+            class="text-sm text-text-secondary"
+          >
+            {{ item.quantity }} × {{ formatBRL(item.price) }}
+            <span v-if="item.unit">{{ item.unit }}</span>
+          </span>
+          <span v-else-if="item.quantity > 1" class="text-sm text-text-secondary">
             × {{ item.quantity }}
             <span v-if="item.unit">{{ item.unit }}</span>
           </span>
+
+          <!-- Category Selector (pequeno, abaixo do nome, para caber no celular) -->
+          <select
+            :value="item.category"
+            @click.stop
+            @change="
+              (e) => {
+                const value = (e.target as HTMLSelectElement).value
+                if (value === '__new__') {
+                  emit('createCategory')
+                } else {
+                  emit('changeCategory', item.id, value)
+                }
+              }
+            "
+            class="self-start max-w-full -ml-1 px-1 py-0.5 text-xs text-text-secondary bg-transparent border border-transparent rounded-md cursor-pointer transition-all duration-200 hover:border-border focus:outline-none focus:ring-2 focus:ring-primary/50"
+            title="Mudar categoria"
+          >
+            <option v-for="cat in categoriesStore.allCategories" :key="cat.id" :value="cat.id">
+              {{ cat.icon }} {{ cat.name }}
+            </option>
+            <option value="__new__" class="font-semibold">➕ Nova categoria...</option>
+          </select>
         </div>
 
-        <!-- Category Selector -->
-        <select
-          :value="item.category"
-          @change="
-            (e) => {
-              const value = (e.target as HTMLSelectElement).value
-              if (value === '__new__') {
-                emit('createCategory')
-              } else {
-                emit('changeCategory', item.id, value)
-              }
-            }
-          "
-          class="px-3 py-1.5 text-sm bg-background border border-border rounded-lg cursor-pointer transition-all duration-200 hover:border-border-hover focus:outline-none focus:ring-2 focus:ring-primary/50 opacity-0 group-hover:opacity-100 max-md:opacity-100"
-          title="Mudar categoria"
-        >
-          <option v-for="cat in categoriesStore.allCategories" :key="cat.id" :value="cat.id">
-            {{ cat.icon }} {{ cat.name }}
-          </option>
-          <option value="__new__" class="font-semibold">➕ Nova categoria...</option>
-        </select>
+        <!-- Preço (opcional) -->
+        <PriceEditor
+          class="shrink-0"
+          :price="item.price"
+          :label="item.name"
+          @save="(price) => emit('setPrice', item.id, price)"
+        />
 
         <!-- Delete Button -->
         <IconButton
           variant="danger"
           icon="🗑️"
           title="Remover item"
-          @click="emit('deleteItem', item.id)"
-          class="opacity-0 group-hover:opacity-100 max-md:opacity-100"
+          @click.stop="emit('deleteItem', item.id)"
+          class="shrink-0 opacity-0 group-hover:opacity-100 max-md:opacity-100"
         />
       </div>
     </div>
