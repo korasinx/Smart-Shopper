@@ -6,6 +6,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages serve em /<repo>/; BASE_PATH vem do workflow de deploy
+  base: process.env.BASE_PATH ?? '/',
   server: {
     host: true,
     allowedHosts: ['.text99.com'],
@@ -29,8 +31,8 @@ export default defineConfig(({ mode }) => ({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        start_url: './',
+        scope: './',
         orientation: 'portrait',
         icons: [
           {
@@ -51,7 +53,7 @@ export default defineConfig(({ mode }) => ({
             name: 'Add Items',
             short_name: 'Add',
             description: 'Quickly add items to your shopping list',
-            url: '/?action=add',
+            url: './?action=add',
             icons: [
               {
                 src: 'pwa-192x192.png',
@@ -64,7 +66,7 @@ export default defineConfig(({ mode }) => ({
             name: 'Voice Input',
             short_name: 'Voice',
             description: 'Add items using voice input',
-            url: '/?action=voice',
+            url: './?action=voice',
             icons: [
               {
                 src: 'pwa-192x192.png',
